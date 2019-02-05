@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  syncthing:
+    image: linuxserver/syncthing
+    restart: unless-stopped
+    environment:
+      PUID:
+      PGID:
+      UMASK_SET:
+    ports:
+      - 8384:8384
+      - 22000:22000
+      - 21027:21027/udp
+    volumes:
+     - /docker/storage/syncthing/sharedir:/mnt/any/dir/you/want
+     - /docker/storage/syncthing/config:/config
