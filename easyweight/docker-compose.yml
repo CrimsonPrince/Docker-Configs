@@ -15,8 +15,8 @@ services:
       LETSENCRYPT_HOST: easyweigh.netsoc.dit.ie
       LETSENCRYPT_EMAIL: netsoc@socs.dit.ie
     volumes:
-     - /docker/storage/easyweigh/code:/code
-     - /docker/storage/easyweigh/html/wp-content:/var/www/html/wp-content
+     - /docker/r4/storage/easyweigh/code:/code
+     - /docker/r4/storage/easyweigh/html/wp-content:/var/www/html/wp-content
      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
 
   easyweigh_mysql:
@@ -28,7 +28,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - /docker/storage/easyweigh/db:/var/lib/mysql
+      - /docker/r4/storage/easyweigh/db:/var/lib/mysql
 
 networks:
   default:
