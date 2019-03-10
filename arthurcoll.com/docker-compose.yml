@@ -7,7 +7,7 @@ services:
     environment:
       VIRTUAL_HOST: arthurcoll.com
       LETSENCRYPT_HOST: arthurcoll.com
-      LETSENCRYPT_EMAIL: kingr4@protonmail.ch
+      LETSENCRYPT_EMAIL: arthur1coll@gmail.com
     volumes:
      - /docker/r4/storage/arthurcoll.com:/usr/local/apache2/htdocs/
 

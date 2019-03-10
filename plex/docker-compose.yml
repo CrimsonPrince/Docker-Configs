@@ -1,0 +1,26 @@
+version: '2'
+services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      PUID: 1000
+      PGID: 1000
+      VERSION: docker
+      VIRTUAL_HOST: plex.arthurcoll.com
+      LETSENCRYPT_HOST: plex.arthurcoll.com
+      LETSENCRYPT_EMAIL: arthur1coll@gmail.com
+    volumes:
+      - /home/r4/docker/plex/config:/config
+      - /home/r4/docker/plex/tv:/data/tvshows
+      - /home/r4/docker/plex/movies:/data/movies
+      - /home/r4/docker/plex/anime:/data/anime
+      - /home/r4/docker/torrent/downloads:/data/torrents
+      - /home/r4/docker/plex/transcode:/transcode
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
