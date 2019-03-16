@@ -2,14 +2,19 @@ version: '2'
 services:
   traefik:
     image: traefik
-    command: --docker
+    command: --docker --api
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080" # The Web UI (enabled by --api)
     restart: always
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./traefik.toml:/traefik.toml"
       - "./acme.json:/acme.json"
     networks:
-      - default
+      - web-tier
+
+networks:
+  web-tier:
+    driver: bridge
