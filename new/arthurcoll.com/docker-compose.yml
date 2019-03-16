@@ -1,14 +1,26 @@
-version: '3'
+version: '3.3'
 services:
   arthur_web:
     image: httpd
     restart: unless-stopped
-    labels:
-      - traefik.backend=blog
-      - traefik.frontend.rule=Host:truesdale.ovh
-      - traefik.docker.network=web
-      - traefik.port=80
+    deploy:
+      labels:
+        - traefik.frontend.rule=Host:consul.${DOMAIN}
+        - traefik.enable=true
+        - traefik.port=8500
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+        - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     volumes:
      - /docker/r4/storage/arthurcoll.com:/usr/local/apache2/htdocs/
     networks:
-     - web-tier
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
