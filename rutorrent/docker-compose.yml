@@ -7,9 +7,9 @@ services:
       PUID: 1000
       PGID: 1000
       VERSION: docker
-      VIRTUAL_HOST: torrent.arthurcoll.com
-      LETSENCRYPT_HOST: torrent.arthurcoll.com
-      LETSENCRYPT_EMAIL: arthur1coll@gmail.com
+      VIRTUAL_HOST: plex.damocles.asia
+      LETSENCRYPT_HOST: plex.damocles.asia
+      LETSENCRYPT_EMAIL: kingr4@protonmail.ch
     volumes:
       - /home/r4/docker/torrent/config:/config
       - /home/r4/docker/torrent/downloads:/downloads

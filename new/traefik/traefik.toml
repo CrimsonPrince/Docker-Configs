@@ -1,0 +1,19 @@
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[acme]
+email = "arthur1coll@gmail.com"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+  [acme.httpChallenge]
+  entryPoint = "http"
+[[acme.domains]]
+	main = "damocles.asia"
+	sans = ["plex.damocles.asia", "torrent.damocles.asia"]
+[[acme.domains]]
+	main = "truesdale.ovh"
