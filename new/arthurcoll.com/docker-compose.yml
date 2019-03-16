@@ -1,10 +1,4 @@
 version: '3'
-networks:
-  web:
-    external: true
-  internal:
-    external: false
-
 services:
   arthur_web:
     image: httpd
@@ -14,8 +8,7 @@ services:
       - traefik.frontend.rule=Host:truesdale.ovh
       - traefik.docker.network=web
       - traefik.port=80
-    networks:
-      - internal
-      - web
     volumes:
      - /docker/r4/storage/arthurcoll.com:/usr/local/apache2/htdocs/
+    networks:
+     - web-tier
