@@ -15,7 +15,6 @@ services:
         - traefik.redirectorservice.frontend.redirect.entryPoint=https
         # Traefik service that listens to HTTPS
         - traefik.webservice.frontend.entryPoints=https
-        - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     environment:
       PUID: 1000
       PGID: 1000
@@ -23,11 +22,6 @@ services:
     volumes:
       - /home/r4/docker/torrent/config:/config
       - /home/r4/docker/torrent/downloads:/downloads
-    ports:
-      - 80:80
-      - 5000:5000
-      - 51413:51413
-      - 6881:6881/udp
     networks:
       - traefik-public
 
