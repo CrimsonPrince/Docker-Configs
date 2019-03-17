@@ -27,6 +27,7 @@ services:
       - /home/r4/docker/plex/anime:/data/anime
       - /home/r4/docker/torrent/downloads:/data/torrents
       - /home/r4/docker/plex/transcode:/transcode
+      - /home/r4/docker/torrent/weird:/weird
     networks:
       - traefik-public
 

@@ -24,6 +24,7 @@ services:
       - /home/r4/docker/torrent/config:/config
       - /home/r4/docker/torrent/downloads:/downloads
       - /home/r4/docker/torrent/hidden:/hidden
+      - /home/r4/docker/torrent/weird:/weird
     networks:
       - traefik-public
 
