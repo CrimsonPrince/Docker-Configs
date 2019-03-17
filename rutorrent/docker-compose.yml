@@ -23,6 +23,7 @@ services:
     volumes:
       - /home/r4/docker/torrent/config:/config
       - /home/r4/docker/torrent/downloads:/downloads
+      - /home/r4/docker/torrent/hidden:/hidden
     networks:
       - traefik-public
 
