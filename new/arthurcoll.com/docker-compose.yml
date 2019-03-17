@@ -5,9 +5,9 @@ services:
     restart: unless-stopped
     deploy:
       labels:
-        - traefik.frontend.rule=Host:consul.${DOMAIN}
+        - traefik.frontend.rule=Host:damocles.asia
         - traefik.enable=true
-        - traefik.port=8500
+        - traefik.port=80
         - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
         - traefik.docker.network=traefik-public
         # Traefik service that listens to HTTP
@@ -15,7 +15,6 @@ services:
         - traefik.redirectorservice.frontend.redirect.entryPoint=https
         # Traefik service that listens to HTTPS
         - traefik.webservice.frontend.entryPoints=https
-        - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     volumes:
      - /docker/r4/storage/arthurcoll.com:/usr/local/apache2/htdocs/
     networks:
