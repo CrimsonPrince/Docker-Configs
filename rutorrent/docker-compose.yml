@@ -1,15 +1,25 @@
-version: '2'
+version: '3.3'
 services:
   rutorrent:
     image: linuxserver/rutorrent
     container_name: rutorrent
+    deploy:
+      labels:
+        - traefik.frontend.rule=Host:torrent.damocles.asia
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+        - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     environment:
       PUID: 1000
       PGID: 1000
       VERSION: docker
-      VIRTUAL_HOST: plex.damocles.asia
-      LETSENCRYPT_HOST: plex.damocles.asia
-      LETSENCRYPT_EMAIL: kingr4@protonmail.ch
     volumes:
       - /home/r4/docker/torrent/config:/config
       - /home/r4/docker/torrent/downloads:/downloads
@@ -18,4 +28,9 @@ services:
       - 5000:5000
       - 51413:51413
       - 6881:6881/udp
-    restart: unless-stopped
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
