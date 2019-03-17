@@ -1,14 +1,22 @@
-version: '2'
+version: '3.3'
 services:
   plex:
     image: linuxserver/plex
     container_name: plex
     network_mode: host
-    labels:
-      - "traefik.enabled=true"
-      - "traefik.backend=nginx"
-      - "traefik.frontend.rule=Host:damocles.asia"
-      - "traefik.port=80"
+    deploy:
+      labels:
+        - traefik.frontend.rule=Host:plex.damocles.asia
+        - traefik.enable=true
+        - traefik.port=32400
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+        - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     environment:
       PUID: 1000
       PGID: 1000
@@ -20,9 +28,9 @@ services:
       - /home/r4/docker/plex/anime:/data/anime
       - /home/r4/docker/torrent/downloads:/data/torrents
       - /home/r4/docker/plex/transcode:/transcode
-    restart: unless-stopped
+    networks:
+      - traefik-public
 
 networks:
-  default:
-    external:
-      name: nginx-proxy
+  traefik-public:
+    external: true
