@@ -18,9 +18,9 @@ services:
     depends_on:
       - easyweigh_mysql
     secrets:
-      - wordpressdb
-      - sqlusername
-      - sqlpasswd
+     - wordpressdb
+     - sqlusername
+     - sqlpasswd
     environment:
       WORDPRESS_DB_HOST: easyweigh_mysql
       WORDPRESS_DB_NAME: /run/secrets/wordpressdb
@@ -37,9 +37,9 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     secrets:
-      - wordpressdb
-      - sqlusername
-      - sqlpasswd
+     - wordpressdb
+     - sqlusername
+     - sqlpasswd
     environment:
       MYSQL_DATABASE: /run/secrets/wordpressdb
       MYSQL_USER: /run/secrets/sqlusername
