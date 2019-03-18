@@ -5,7 +5,7 @@ services:
     image: wordpress
     deploy:
       labels:
-        - traefik.frontend.rule=Host:damocles.asia
+        - traefik.frontend.rule=Host:easyweigh.ie
         - traefik.enable=true
         - traefik.port=80
         - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
@@ -17,25 +17,33 @@ services:
         - traefik.webservice.frontend.entryPoints=https
     depends_on:
       - easyweigh_mysql
+    secrets:
+      - wordpressdb
+      - sqlusername
+      - sqlpasswd
     environment:
       WORDPRESS_DB_HOST: easyweigh_mysql
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: /run/secrets/wordpressdb
+      WORDPRESS_DB_USER: /run/secrets/sqlusername
+      WORDPRESS_DB_PASSWORD: /run/secrest/sqlpasswd
     volumes:
      - /docker/r4/storage/easyweigh/code:/code
      - /docker/r4/storage/easyweigh/html/wp-content:/var/www/html/wp-content
      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     networks:
-      - traefik-public
+     - traefik-public
 
   easyweigh_mysql:
     image: mysql:5.7
     restart: unless-stopped
+    secrets:
+      - wordpressdb
+      - sqlusername
+      - sqlpasswd
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: /run/secrets/wordpressdb
+      MYSQL_USER: /run/secrets/sqlusername
+      MYSQL_PASSWORD: /run/secrets/sqlpasswd
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
       - /docker/r4/storage/easyweigh/db:/var/lib/mysql
@@ -44,4 +52,11 @@ services:
 
 networks:
   traefik-public:
+    external: true
+secrets:
+  wordpressdb:
+    external: true
+  sqlusername:
+    external: true
+  sqlpasswd:
     external: true
