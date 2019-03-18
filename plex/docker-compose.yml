@@ -22,12 +22,7 @@ services:
       VERSION: docker
     volumes:
       - /home/r4/docker/plex/config:/config
-      - /home/r4/docker/plex/tv:/data/tvshows
-      - /home/r4/docker/plex/movies:/data/movies
-      - /home/r4/docker/plex/anime:/data/anime
-      - /home/r4/docker/torrent/downloads:/data/torrents
-      - /home/r4/docker/plex/transcode:/transcode
-      - /home/r4/docker/torrent/weird:/data/weird
+      - /home/r4/docker:/data
     networks:
       - traefik-public
 
