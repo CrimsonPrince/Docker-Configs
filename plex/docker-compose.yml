@@ -3,7 +3,6 @@ services:
   plex:
     image: linuxserver/plex
     container_name: plex
-    network_mode: host
     deploy:
       labels:
         - traefik.frontend.rule=Host:plex.damocles.asia

@@ -1,9 +1,14 @@
-version: '2'
+version: '3'
 
 services:
   easyweigh_wp:
     image: wordpress
     restart: unless-stopped
+    labels:
+      - traefik.backend=blog
+      - traefik.frontend.rule=Host:damocles.asia
+      - traefik.docker.network=web
+      - traefik.port=80
     depends_on:
       - easyweigh_mysql
     environment:
@@ -11,9 +16,6 @@ services:
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      VIRTUAL_HOST: easyweigh.netsoc.dit.ie
-      LETSENCRYPT_HOST: easyweigh.netsoc.dit.ie
-      LETSENCRYPT_EMAIL: netsoc@socs.dit.ie
     volumes:
      - /docker/r4/storage/easyweigh/code:/code
      - /docker/r4/storage/easyweigh/html/wp-content:/var/www/html/wp-content
@@ -29,8 +31,3 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
       - /docker/r4/storage/easyweigh/db:/var/lib/mysql
-
-networks:
-  default:
-    external:
-      name: nginx-proxy
