@@ -17,15 +17,11 @@ services:
         - traefik.webservice.frontend.entryPoints=https
     depends_on:
       - easyweigh_mysql
-    secrets:
-     - wordpressdb
-     - sqlusername
-     - sqlpasswd
     environment:
       WORDPRESS_DB_HOST: easyweigh_mysql
-      WORDPRESS_DB_NAME: /run/secrets/wordpressdb
-      WORDPRESS_DB_USER: /run/secrets/sqlusername
-      WORDPRESS_DB_PASSWORD: /run/secrest/sqlpasswd
+      WORDPRESS_DB_NAME: ${wpdb}
+      WORDPRESS_DB_USER: ${sqluser}
+      WORDPRESS_DB_PASSWORD: ${sqlpasswd}
     volumes:
      - /docker/r4/storage/easyweigh/code:/code
      - /docker/r4/storage/easyweigh/html/wp-content:/var/www/html/wp-content
@@ -36,14 +32,10 @@ services:
   easyweigh_mysql:
     image: mysql:5.7
     restart: unless-stopped
-    secrets:
-     - wordpressdb
-     - sqlusername
-     - sqlpasswd
     environment:
-      MYSQL_DATABASE: /run/secrets/wordpressdb
-      MYSQL_USER: /run/secrets/sqlusername
-      MYSQL_PASSWORD: /run/secrets/sqlpasswd
+      MYSQL_DATABASE: ${wpdb}
+      MYSQL_USER: ${sqluser}
+      MYSQL_PASSWORD: ${sqlpasswd}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
       - /docker/r4/storage/easyweigh/db:/var/lib/mysql
@@ -52,11 +44,4 @@ services:
 
 networks:
   traefik-public:
-    external: true
-secrets:
-  wordpressdb:
-    external: true
-  sqlusername:
-    external: true
-  sqlpasswd:
     external: true
