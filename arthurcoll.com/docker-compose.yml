@@ -4,7 +4,7 @@ services:
     image: httpd
     deploy:
       labels:
-        - traefik.frontend.rule=Host:damocles.asia
+        - traefik.frontend.rule=Host:arthurcoll.com
         - traefik.enable=true
         - traefik.port=80
         - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
