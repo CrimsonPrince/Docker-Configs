@@ -22,7 +22,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: >
       --docker
-      --docker.swarmmode
       --docker.watch
       --docker.exposedbydefault=false
       --constraints=tag==traefik-public
