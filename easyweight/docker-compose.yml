@@ -17,6 +17,9 @@ services:
         - traefik.webservice.frontend.entryPoints=https
     depends_on:
       - easyweigh_mysql
+    secrets:
+      - my_secret
+      - my_other_secret
     environment:
       WORDPRESS_DB_HOST: easyweigh_mysql
       WORDPRESS_DB_NAME: ${wpdb}
@@ -37,6 +40,10 @@ services:
       MYSQL_USER: ${sqluser}
       MYSQL_PASSWORD: ${sqlpasswd}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    secrets:
+      - wpdb
+      - sqluser
+      - sqlpasswd
     volumes:
       - /docker/r4/storage/easyweigh/db:/var/lib/mysql
     networks:

@@ -3,18 +3,17 @@ services:
   plex:
     image: linuxserver/plex
     container_name: plex
-    deploy:
-      labels:
-        - traefik.frontend.rule=Host:plex.damocles.asia
-        - traefik.enable=true
-        - traefik.port=32400
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
+    labels:
+      - traefik.frontend.rule=Host:plex.damocles.asia
+      - traefik.enable=true
+      - traefik.port=32400
+      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+      - traefik.docker.network=traefik-public
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
     environment:
       PUID: 1000
       PGID: 1000

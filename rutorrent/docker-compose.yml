@@ -3,19 +3,18 @@ services:
   rutorrent:
     image: linuxserver/rutorrent
     container_name: rutorrent
-    deploy:
-      labels:
-        - traefik.frontend.rule=Host:torrent.damocles.asia
-        - traefik.enable=true
-        - traefik.port=80
-        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
-        - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
+    labels:
+      - traefik.frontend.rule=Host:torrent.damocles.asia
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+      - traefik.docker.network=traefik-public
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
+      - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     environment:
       PUID: 1000
       PGID: 1000
