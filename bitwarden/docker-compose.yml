@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  bitwarden:
+    image: bitwardenrs/server
+    restart: always
+    volumes:
+      - /docker/r4/storage/bitwarden/data:/data
+    environment:
+      WEBSOCKET_ENABLED: false
+      SIGNUPS_ALLOWED: false
+
