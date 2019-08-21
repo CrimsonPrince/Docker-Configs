@@ -7,8 +7,8 @@ services:
     volumes:
       - /docker/r4/storage/bitwarden/data:/data
     environment:
-      WEBSOCKET_ENABLED: false
-      SIGNUPS_ALLOWED: false
+      WEBSOCKET_ENABLED: "false"
+      SIGNUPS_ALLOWED: "false"
     labels:
       - traefik.frontend.rule=Host:bitwarden.r4.ie
       - traefik.enable=true
