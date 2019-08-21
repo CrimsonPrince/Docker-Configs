@@ -7,11 +7,10 @@ services:
     volumes:
       - /docker/r4/storage/bitwarden/data:/data
     environment:
-      WEBSOCKET_ENABLED: "true"
+      WEBSOCKET_ENABLED: "false"
       SIGNUPS_ALLOWED: "false"
     labels:
-      - traefik.web.frontend.rule=Host:bitwarden.r4.ie
-      - traefik.web.port=80
+      - traefik.frontend.rule=Host:bitwarden.r4.ie
       - traefik.enable=true
       - traefik.port=80
       - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
@@ -21,9 +20,6 @@ services:
       - traefik.redirectorservice.frontend.redirect.entryPoint=https
       # Traefik service that listens to HTTPS
       - traefik.webservice.frontend.entryPoints=https
-      - traefik.hub.frontend.rule=Host:bitwarden.r4.ie;Path:/notifications/hub
-      - traefik.hub.port=3012
-      - traefik.hub.protocol=ws
     networks:
      - traefik-public
 
