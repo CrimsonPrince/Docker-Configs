@@ -10,7 +10,7 @@ services:
       WEBSOCKET_ENABLED: "true"
       SIGNUPS_ALLOWED: "false"
     labels:
-      - traefik.web.frontend.rule=Host:bitwarden.domain.tld
+      - traefik.web.frontend.rule=Host:bitwarden.r4.ie
       - traefik.web.port=80
       - traefik.enable=true
       - traefik.port=80
@@ -21,7 +21,7 @@ services:
       - traefik.redirectorservice.frontend.redirect.entryPoint=https
       # Traefik service that listens to HTTPS
       - traefik.webservice.frontend.entryPoints=https
-      - traefik.hub.frontend.rule=Host:bitwarden.domain.tld;Path:/notifications/hub
+      - traefik.hub.frontend.rule=Host:bitwarden.r4.ie;Path:/notifications/hub
       - traefik.hub.port=3012
       - traefik.hub.protocol=ws
     networks:
