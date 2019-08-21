@@ -9,4 +9,21 @@ services:
     environment:
       WEBSOCKET_ENABLED: false
       SIGNUPS_ALLOWED: false
+    labels:
+      - traefik.frontend.rule=Host:bitwarden.r4.ie
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+      - traefik.docker.network=traefik-public
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
+    networks:
+     - traefik-public
+
+networks:
+  traefik-public:
+    external: true
 
