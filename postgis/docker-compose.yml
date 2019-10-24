@@ -33,7 +33,7 @@ services:
       - db:db
     environment:
       - DUMPPREFIX=demo
-      - PGUSER={sqlUser}
+      - PGUSER=${sqlUser}
       - PGPASSWORD=${sqlPass}
       - PGDATABASE=gis
       - PGPORT=5432
