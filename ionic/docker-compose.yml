@@ -14,7 +14,7 @@ services:
       # Traefik service that listens to HTTPS
       - traefik.webservice.frontend.entryPoints=https
     volumes:
-     - /docker/storage/r4/ionic/www:/usr/local/apache2/htdocs/
+     - /docker/r4/storage/ionic/www:/usr/local/apache2/htdocs/
     networks:
       - traefik-public
 
