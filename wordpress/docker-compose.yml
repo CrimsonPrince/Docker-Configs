@@ -1,0 +1,46 @@
+version: '3.3'
+
+services:
+  wp_main:
+    image: wordpress
+    labels:
+      - traefik.frontend.rule=Host:test.r4.ie
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+      - traefik.docker.network=traefik-public
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
+    depends_on:
+      - wp_mysql
+    environment:
+      WORDPRESS_DB_HOST: easyweigh_mysql
+      WORDPRESS_DB_NAME: ${wpdb}
+      WORDPRESS_DB_USER: ${sqluser}
+      WORDPRESS_DB_PASSWORD: ${sqlpasswd}
+    volumes:
+     - /docker/r4/storage/easyweigh/code:/code
+     - /docker/r4/storage/easyweigh/html/wp-content:/var/www/html/wp-content
+     - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    networks:
+     - traefik-public
+
+  wp_mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${wpdb}
+      MYSQL_USER: ${sqluser}
+      MYSQL_PASSWORD: ${sqlpasswd}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - /docker/r4/storage/easyweigh/db:/var/lib/mysql
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
