@@ -17,7 +17,7 @@ services:
     depends_on:
       - wp_mysql
     environment:
-      WORDPRESS_DB_HOST: easyweigh_mysql
+      WORDPRESS_DB_HOST: wp_mysql
       WORDPRESS_DB_NAME: ${wpdb}
       WORDPRESS_DB_USER: ${sqluser}
       WORDPRESS_DB_PASSWORD: ${sqlpasswd}
