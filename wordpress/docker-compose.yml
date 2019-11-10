@@ -22,8 +22,8 @@ services:
       WORDPRESS_DB_USER: ${sqluser}
       WORDPRESS_DB_PASSWORD: ${sqlpasswd}
     volumes:
-     - /docker/r4/storage/easyweigh/code:/code
-     - /docker/r4/storage/easyweigh/html/wp-content:/var/www/html/wp-content
+     - /docker/r4/storage/shane/code:/code
+     - /docker/r4/storage/shane/html/wp-content:/var/www/html/wp-content
      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     networks:
      - traefik-public
@@ -37,7 +37,7 @@ services:
       MYSQL_PASSWORD: ${sqlpasswd}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - /docker/r4/storage/easyweigh/db:/var/lib/mysql
+      - /docker/r4/storage/shane/db:/var/lib/mysql
     networks:
       - traefik-public
 
