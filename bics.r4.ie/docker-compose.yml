@@ -3,7 +3,7 @@ services:
   bics:
     image: httpd
     labels:
-      - traefik.frontend.rule=Host:bics.netsoc.dit.ie
+      - traefik.frontend.rule=Host:bics.r4.ie
       - traefik.enable=true
       - traefik.port=80
       - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
