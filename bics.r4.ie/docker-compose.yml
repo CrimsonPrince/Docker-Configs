@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  bics:
+    image: httpd
+    deploy:
+      labels:
+        - traefik.frontend.rule=Host:bics.netsoc.dit.ie
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+        - traefik.docker.network=traefik-public
+        # Traefik service that listens to HTTP
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+    volumes:
+      - docker/storage/NetSoc.dit.ie/Comp-Web/bics/public:/usr/local/apache2/htdocs/
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
