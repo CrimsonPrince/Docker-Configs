@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  arthur_web:
+    image: httpd
+    labels:
+      - traefik.frontend.rule=Host:app.r4.ie
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
+      - traefik.docker.network=traefik-public
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
+    volumes:
+     - /docker/r4/storage/discount:/usr/local/apache2/htdocs/
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
