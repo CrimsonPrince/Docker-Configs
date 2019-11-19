@@ -3,45 +3,21 @@ version: '3.3'
 services:
   traefik:
     image: traefik
+    restart: always
     ports:
       - 80:80
       - 443:443
-    labels:
-      - traefik.frontend.rule=Host:traefik.${DOMAIN}
-      - traefik.enable=true
-      - traefik.port=8080
-      - traefik.tags=traefik-public
-      - traefik.docker.network=traefik-public
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
-      - traefik.frontend.auth.basic.users=${USERNAME}:${HASHED_PASSWORD}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /docker/certs/acme.json:/acme.json
-    command: >
-      --docker
-      --docker.watch
-      --docker.exposedbydefault=false
-      --constraints=tag==traefik-public
-      --entrypoints='Name:http Address::80'
-      --entrypoints='Name:https Address::443 TLS'
-      --acme
-      --acme.email=${EMAIL}
-      --acme.storage="acme.json"
-      --acme.entryPoint=https
-      --acme.httpChallenge.entryPoint=http
-      --acme.onhostrule=true
-      --acme.acmelogging=true
-      --logLevel=INFO
-      --accessLog
-      --api
+      - ./traefik.toml:/traefik.toml
     networks:
-      - default
       - traefik-public
+      - traefik
+
 
 networks:
   traefik-public:
     external: true
+  traefik:
+    internal: true
