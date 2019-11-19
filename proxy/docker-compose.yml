@@ -7,11 +7,21 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /docker/certs/acme.json:/acme.json
       - ./traefik.toml:/traefik.toml
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.traefik-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik-http.entrypoints=web"
+      - "traefik.http.routers.traefik-http.rule=Host(`traefik.r4.ie`)"
+      - "traefik.http.routers.traefik-http.middlewares=traefik-https@docker"
+      - "traefik.http.routers.traefik.entrypoints=web-secure"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.r4.ie`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=default"
+      - traefik.http.services.plex.loadbalancer.server.port=8080
     networks:
       - traefik-public
       - traefik
