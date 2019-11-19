@@ -24,16 +24,15 @@ services:
         constraints:
           - node.role == manager
       labels:
-        - traefik.frontend.rule=Host:${DOMAIN}
-        - traefik.enable=true
-        - traefik.port=8080
-        - traefik.tags=traefik-public
-        - traefik.docker.network=traefik-public
-        # Traefik service that listens to HTTP
-        - traefik.redirectorservice.frontend.entryPoints=http
-        - traefik.redirectorservice.frontend.redirect.entryPoint=https
-        # Traefik service that listens to HTTPS
-        - traefik.webservice.frontend.entryPoints=https
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.swarmpit-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.swarmpit-http.entrypoints=web"
+      - "traefik.http.routers.swarmpit-http.rule=Host(`swarmpit.r4.ie`)"
+      - "traefik.http.routers.swarmpit-http.middlewares=swarmpit-https@docker"
+      - "traefik.http.routers.swarmpit.entrypoints=web-secure"
+      - "traefik.http.routers.swarmpit.rule=Host(`swarmpit.r4.ie`)"
+      - "traefik.http.routers.swarmpit.tls=true"
+      - "traefik.http.routers.swarmpit.tls.certresolver=default"
 
   db:
     image: couchdb:2.3.0
