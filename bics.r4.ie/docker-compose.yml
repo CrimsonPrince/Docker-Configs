@@ -3,16 +3,15 @@ services:
   bics:
     image: httpd
     labels:
-      - traefik.frontend.rule=Host:bics.r4.ie
-      - traefik.enable=true
-      - traefik.port=80
-      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-      - traefik.docker.network=traefik-public
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.bics-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.bics-http.entrypoints=web"
+      - "traefik.http.routers.bics-http.rule=Host(`bics.r4.ie`)"
+      - "traefik.http.routers.bics-http.middlewares=bics-https@docker"
+      - "traefik.http.routers.bics.entrypoints=web-secure"
+      - "traefik.http.routers.bics.rule=Host(`bics.r4.ie`)"
+      - "traefik.http.routers.bics.tls=true"
+      - "traefik.http.routers.bics.tls.certresolver=default"
     volumes:
       - /docker/storage/NetSoc.dit.ie/Comp-Web/bics/public:/usr/local/apache2/htdocs/
     networks:
@@ -21,3 +20,5 @@ services:
 networks:
   traefik-public:
     external: true
+  traefik:
+    internal: true

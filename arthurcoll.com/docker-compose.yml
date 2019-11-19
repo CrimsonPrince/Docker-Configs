@@ -3,16 +3,15 @@ services:
   arthur_web:
     image: httpd
     labels:
-      - traefik.frontend.rule=Host:arthurcoll.com
-      - traefik.enable=true
-      - traefik.port=80
-      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-      - traefik.docker.network=traefik-public
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.personal-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.personal-http.entrypoints=web"
+      - "traefik.http.routers.personal-http.rule=Host(`arthurcoll.com`)"
+      - "traefik.http.routers.personal-http.middlewares=personal-https@docker"
+      - "traefik.http.routers.personal.entrypoints=web-secure"
+      - "traefik.http.routers.personal.rule=Host(`arthurcoll.com`)"
+      - "traefik.http.routers.personal.tls=true"
+      - "traefik.http.routers.personal.tls.certresolver=default"
     volumes:
      - /docker/r4/storage/arthurcoll.com:/usr/local/apache2/htdocs/
     networks:
@@ -21,3 +20,5 @@ services:
 networks:
   traefik-public:
     external: true
+  traefik:
+    internal: true
