@@ -5,14 +5,14 @@ services:
     image: wordpress
     labels:
       - "traefik.enable=true"
-      - "traefik.http.middlewares.personal-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.personal-http.entrypoints=web"
-      - "traefik.http.routers.personal-http.rule=Host(`shurikon.r4.ie`)"
-      - "traefik.http.routers.personal-http.middlewares=personal-https@docker"
-      - "traefik.http.routers.personal.entrypoints=web-secure"
-      - "traefik.http.routers.personal.rule=Host(`shurikon.r4.ie`)"
-      - "traefik.http.routers.personal.tls=true"
-      - "traefik.http.routers.personal.tls.certresolver=default"
+      - "traefik.http.middlewares.shurikon-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.shurikon-http.entrypoints=web"
+      - "traefik.http.routers.shurikon-http.rule=Host(`shurikon.r4.ie`)"
+      - "traefik.http.routers.shurikon-http.middlewares=shurikon-https@docker"
+      - "traefik.http.routers.shurikon.entrypoints=web-secure"
+      - "traefik.http.routers.shurikon.rule=Host(`shurikon.r4.ie`)"
+      - "traefik.http.routers.shurikon.tls=true"
+      - "traefik.http.routers.shurikon.tls.certresolver=default"
     depends_on:
       - wp_mysql
     environment:
