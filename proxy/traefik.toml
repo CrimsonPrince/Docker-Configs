@@ -15,12 +15,23 @@
     address = ":80"
   [entryPoints.web-secure]
     address = ":443"
-  [entryPoints.dashboard]
-    address = ":8080"
 
 [certificatesResolvers]
   [certificatesResolvers.default.acme]
     email = "kingr4@protonmail.ch"
     storage = "acme.json"
-  [certificatesResolvers.sample.acme.httpChallenge]
+  [certificatesResolvers.default.acme.httpChallenge]
     entryPoint = "web"
+
+[http]
+  [http.routers]
+    [http.routers.my-api]
+      rule = "Host(`traefik.r4.ie`)"
+      service = "api@internal"
+      middlewares = ["auth"]
+      
+  [http.middlewares]    
+    [http.middlewares.auth.basicAuth]
+      users = [
+        "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/",
+      ]
