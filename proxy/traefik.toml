@@ -4,7 +4,7 @@
 [providers.docker]
   exposedByDefault = false
   endpoint = "unix:///var/run/docker.sock"
-  network = "traefik"
+  network = "traefik-public"
 
 [api]
   dashboard = true
@@ -22,16 +22,3 @@
     storage = "acme.json"
   [certificatesResolvers.default.acme.httpChallenge]
     entryPoint = "web"
-
-[http]
-  [http.routers]
-    [http.routers.my-api]
-      rule = "Host(`traefik.r4.ie`)"
-      service = "api@internal"
-      middlewares = ["auth"]
-      
-  [http.middlewares]    
-    [http.middlewares.auth.basicAuth]
-      users = [
-        "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/",
-      ]
