@@ -4,16 +4,15 @@ services:
   wp_main:
     image: wordpress
     labels:
-      - traefik.frontend.rule=Host:test.r4.ie
-      - traefik.enable=true
-      - traefik.port=80
-      - traefik.tags=${TRAEFIK_PUBLIC_TAG:-traefik-public}
-      - traefik.docker.network=traefik-public
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.personal-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.personal-http.entrypoints=web"
+      - "traefik.http.routers.personal-http.rule=Host(`shurikon.r4.ie`)"
+      - "traefik.http.routers.personal-http.middlewares=personal-https@docker"
+      - "traefik.http.routers.personal.entrypoints=web-secure"
+      - "traefik.http.routers.personal.rule=Host(`shurikon.r4.ie`)"
+      - "traefik.http.routers.personal.tls=true"
+      - "traefik.http.routers.personal.tls.certresolver=default"
     depends_on:
       - wp_mysql
     environment:
@@ -22,8 +21,8 @@ services:
       WORDPRESS_DB_USER: ${sqluser}
       WORDPRESS_DB_PASSWORD: ${sqlpasswd}
     volumes:
-     - /docker/r4/storage/shane/code:/code
-     - /docker/r4/storage/shane/html/wp-content:/var/www/html/wp-content
+     - /docker/r4/storage/shurikon/code:/code
+     - /docker/r4/storage/shurikon/html/wp-content:/var/www/html/wp-content
      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     networks:
      - traefik-public
@@ -37,7 +36,7 @@ services:
       MYSQL_PASSWORD: ${sqlpasswd}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
-      - /docker/r4/storage/shane/db:/var/lib/mysql
+      - /docker/r4/storage/shurikon/db:/var/lib/mysql
     networks:
       - traefik-public
 
