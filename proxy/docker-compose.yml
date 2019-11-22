@@ -12,16 +12,12 @@ services:
       - /docker/certs/acme.json:/acme.json
       - ./traefik.toml:/traefik.toml
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.middlewares.traefik-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.traefik-http.entrypoints=web"
-      - "traefik.http.routers.traefik-http.rule=Host(`traefik.r4.ie`)"
-      - "traefik.http.routers.traefik-http.middlewares=traefik-https@docker"
-      - "traefik.http.routers.traefik.entrypoints=web-secure"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.r4.ie`)"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.tls.certresolver=default"
-      - traefik.http.services.plex.loadbalancer.server.port=8080
+    - "traefik.http.routers.api.rule=Host(`traefik.r4.ie`)"
+    - "traefik.http.routers.api.entrypoints=web-secure"
+    - "traefik.http.routers.api.service=api@internal"
+    - "traefik.http.routers.api.middlewares=myAuth"
+    - "traefik.http.routers.api.tls"
+    - "traefik.http.middlewares.myAuth.basicauth.users=test:$$2y$$10$$.OakivUMNHiQxvPwNaDyL.UpsEPkQZKztQ5m6HEHr6znk68yQVeAS"
     networks:
       - traefik-public
       - traefik
