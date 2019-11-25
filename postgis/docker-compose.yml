@@ -1,15 +1,11 @@
-version: '2.1'
-volumes:
-  dbBackups:
-  postgisData:
+version: '3.3'
 
 services:
 
   db:
     image: kartoza/postgis:11.0-2.5
     volumes:
-      - postgisData:/var/lib/postgresql
-      - dbBackups:/backups
+      - /docker/storage/postifs:/var/lib/postgresql
     environment:
       # If you need to create multiple database you can add coma separated databases eg gis,data
       - POSTGRES_DB=gis
@@ -19,26 +15,5 @@ services:
       # Add extensions you need to be enabled by default in the DB. Default are the three specified below
       - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,ogr_fdw
     ports:
-      - 5434:5432
+      - 5432:5432
     restart: on-failure
-    healthcheck:
-      test: "exit 0"
-
-  dbBackups:
-    image: kartoza/pg-backup:11.0
-    hostname: pg-backups
-    volumes:
-      - dbBackups:/backups
-    links:
-      - db:db
-    environment:
-      - DUMPPREFIX=demo
-      - PGUSER=${sqlUser}
-      - PGPASSWORD=${sqlPass}
-      - PGDATABASE=gis
-      - PGPORT=5432
-      - PGHOST=db
-    restart: on-failure
-    depends_on:
-      db:
-        condition: service_healthy
