@@ -1,19 +1,15 @@
 version: '3.3'
-
 services:
-
   db:
-    image: kartoza/postgis:11.0-2.5
+    image: kartoza/postgis:11.0-2.5 # PreBuilt Docker Image Containing PostGIS
     volumes:
-      - /docker/storage/postifs:/var/lib/postgresql
+      - /docker/storage/postgis:/var/lib/postgresql #Mounting the folder Containing the Database Files to the Local System.
     environment:
-      # If you need to create multiple database you can add coma separated databases eg gis,data
       - POSTGRES_DB=gis
-      - POSTGRES_USER=${sqlUser}
+      - POSTGRES_USER=${sqlUser} #Values will be substituted by the Environment Variable sqlUser
       - POSTGRES_PASS=${sqlPass}
       - ALLOW_IP_RANGE=0.0.0.0/0
-      # Add extensions you need to be enabled by default in the DB. Default are the three specified below
       - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,ogr_fdw
     ports:
-      - 5432:5432
+      - 5432:5432 #Binds port 5432 in the Docker Container to that on the local System
     restart: on-failure
