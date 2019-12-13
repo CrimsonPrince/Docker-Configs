@@ -17,10 +17,13 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-     - /docker/r4/storage/pgadmin:/var/lib/pgadmin
+        - pgadmin:/var/lib/pgadmin
     networks:
      - traefik-public
 
 networks:
   traefik-public:
     external: true
+
+volumes:
+    pgadmin: 
