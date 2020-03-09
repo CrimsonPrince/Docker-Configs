@@ -7,10 +7,10 @@ services:
     - "traefik.enable=true"
     - "traefik.http.middlewares.fypbackend-https.redirectscheme.scheme=https"
     - "traefik.http.routers.fypbackend-http.entrypoints=web"
-    - "traefik.http.routers.fypbackend-http.rule=Host(`backend.r4.ie`)"
+    - "traefik.http.routers.fypbackend-http.rule=Host(`api.r4.ie`)"
     - "traefik.http.routers.fypbackend-http.middlewares=fypbackend-https@docker"
     - "traefik.http.routers.fypbackend.entrypoints=web-secure"
-    - "traefik.http.routers.fypbackend.rule=Host(`backend.r4.ie`)"
+    - "traefik.http.routers.fypbackend.rule=Host(`api.r4.ie`)"
     - "traefik.http.routers.fypbackend.tls=true"
     - "traefik.http.routers.fypbackend.tls.certresolver=default"
     enviroment:
