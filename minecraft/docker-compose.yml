@@ -1,0 +1,16 @@
+version: '3'
+# Other docker-compose examples in /examples
+
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    ports:
+      - "25565:25565"
+    volumes:
+      - "/docker/r4/storage/mc:/data"
+    environment:
+      EULA: "TRUE"
+      TYPE: "BUKKIT"
+      VERSION: 1.15.2
+  
+    restart: always
