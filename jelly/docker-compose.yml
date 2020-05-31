@@ -1,0 +1,26 @@
+version: "3"
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    user: 1000:1000
+    network_mode: "host"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.jelly-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.jelly-http.entrypoints=web"
+      - "traefik.http.routers.jelly-http.rule=Host(`jelly.r4.ie`)"
+      - "traefik.http.routers.jelly-http.middlewares=jelly-https@docker"
+      - "traefik.http.routers.jelly.entrypoints=web-secure"
+      - "traefik.http.routers.jelly.rule=Host(`jelly.r4.ie`)"
+      - "traefik.http.routers.jelly.tls=true"
+      - "traefik.http.routers.jelly.tls.certresolver=default"
+    volumes:
+      - /docker/storage/jelly/config:/config
+      - /docker/storage/jelly/cache:/cache
+      - /home/r4/docker:/media
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
