@@ -3,6 +3,7 @@ services:
   rutorrent:
     image: linuxserver/rutorrent
     container_name: rutorrent
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.torrent-https.redirectscheme.scheme=https"

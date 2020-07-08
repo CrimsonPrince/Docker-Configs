@@ -3,6 +3,7 @@ version: '3.3'
 services:
   bitwarden:
     image: bitwardenrs/server
+    container_name: bitwarden
     restart: always
     volumes:
       - /docker/r4/storage/bitwarden/data:/data
