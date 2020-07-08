@@ -2,6 +2,8 @@ version: "3"
 services:
   jellyfin:
     image: jellyfin/jellyfin
+    restart: always
+    container_name: jelly
     user: 1000:1000
     labels:
       - "traefik.enable=true"
