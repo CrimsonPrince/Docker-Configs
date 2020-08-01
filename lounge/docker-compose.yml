@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  lounge:
+    image: thelounge/thelounge:latest
+    container_name: lounge
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.lounge-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.lounge-http.entrypoints=web"
+      - "traefik.http.routers.lounge-http.rule=Host(`lounge.r4.ie`)"
+      - "traefik.http.routers.lounge-http.middlewares=lounge-https@docker"
+      - "traefik.http.routers.lounge.entrypoints=web-secure"
+      - "traefik.http.routers.lounge.rule=Host(`lounge.r4.ie`)"
+      - "traefik.http.routers.lounge.tls=true"
+      - "traefik.http.routers.lounge.tls.certresolver=default"
+      - traefik.http.services.lounge.loadbalancer.server.port=9000
+    volumes:
+      - /home/r4/docker/lounge:/var/opt/thelounge
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
