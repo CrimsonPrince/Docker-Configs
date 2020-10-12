@@ -6,7 +6,7 @@ services:
     container_name: bitwarden
     restart: always
     volumes:
-      - /docker/r4/storage/bitwarden/data:/data
+      - /docker/storage/bitwarden/data:/data
     environment:
       WEBSOCKET_ENABLED: "false"
       SIGNUPS_ALLOWED: "false"
