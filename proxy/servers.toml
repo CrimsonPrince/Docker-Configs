@@ -1,0 +1,10 @@
+[backends]
+[backends.dmap]
+        [backends.dmap.servers.dmap]
+            url = "http://127.0.0.1:8123"
+
+[frontends]
+        [frontends.domain]
+                backend = "dmap"
+        [frontends.domain.routes.domain]
+                rule = "Host:map.r4.ie"
