@@ -6,6 +6,9 @@
   endpoint = "unix:///var/run/docker.sock"
   network = "traefik-public"
 
+[providers.file]
+  filename = "./servers.toml"
+
 [api]
   dashboard = true
   debug = true
@@ -22,10 +25,4 @@
     storage = "acme.json"
   [certificatesResolvers.default.acme.httpChallenge]
     entryPoint = "web"
-
-[file]
-        filename = "servers.toml"
-
-# Enable watch file changes
-        watch = true
   
