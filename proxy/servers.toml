@@ -1,10 +1,10 @@
    # Define a connection between requests and services
      [http.routers.dmap]
         rule = "Host(`map.r4.ie`)"
-        entrypoints = ["websecure"]
+        entrypoints = ["web-secure"]
         service = "nas"
      [http.routers.dmap.tls]
-        certResolver = "httpchallenge"
+        certResolver = "httpChallenge"
 
 
  [http.services]
