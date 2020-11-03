@@ -6,9 +6,6 @@
   endpoint = "unix:///var/run/docker.sock"
   network = "traefik-public"
 
-[providers.file]
-  filename = "./servers.toml"
-
 [api]
   dashboard = true
   debug = true
