@@ -12,3 +12,4 @@
         [http.services.dmap.loadBalancer]
            [[http.services.dmap.loadBalancer.servers]]
              url = "http://#EnterIpHere:8123"
+             passHostHeader = true
