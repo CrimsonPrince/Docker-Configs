@@ -1,0 +1,31 @@
+version: '3.5'
+services:
+  daemon:
+    build: .
+    restart: always
+    networks:
+      - daemon0
+    ports:
+      - "8080:8080"
+      - "2022:2022"
+    tty: true
+    environment:
+      - "DEBUG=false"
+      - "TZ=UTC" # change to the three letter timezone of your choosing
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/containers/:/var/lib/docker/containers/"
+      - "/etc/pterodactyl/:/etc/pterodactyl/"
+      - "/var/lib/pterodactyl/:/var/lib/pterodactyl/"
+      - "/var/log/pterodactyl/:/var/log/pterodactyl/"
+      - "/tmp/pterodactyl/:/tmp/pterodactyl/"
+
+networks:
+  daemon0:
+    name: daemon0
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.21.0.0/16"
+    driver_opts:
+      com.docker.network.bridge.name: daemon0
