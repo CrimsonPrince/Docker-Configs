@@ -71,7 +71,9 @@ services:
       - "MAIL_USERNAME=''"
       - "MAIL_PASSWORD=''"
       - "MAIL_ENCRYPTION=true"
+    networks:
+      - traefik-public
 
 networks:
-    traefik-public:
-        external: true
+  traefik-public:
+    external: true
