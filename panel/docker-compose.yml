@@ -10,10 +10,14 @@ services:
       - "MYSQL_DATABASE=${DB}"
       - "MYSQL_USER=${USER}"
       - "MYSQL_PASSWORD=${PASSWD}"
+    networks:
+      - backend
 
   cache:
     image: redis:alpine
     restart: always
+    networks:
+      - backend
 
   panel:
     image: quay.io/parkervcp/pterodactyl:release_v1.0.3
@@ -72,8 +76,11 @@ services:
       - "MAIL_PASSWORD=''"
       - "MAIL_ENCRYPTION=true"
     networks:
+      - backend
       - traefik-public
 
 networks:
   traefik-public:
     external: true
+  backend:
+    internal: true
