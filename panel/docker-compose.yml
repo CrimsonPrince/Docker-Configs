@@ -16,7 +16,7 @@ services:
     restart: always
 
   panel:
-    image: quay.io/pterodactyl/panel:latest
+    image: quay.io/parkervcp/pterodactyl:release_v1.0.3
     restart: always
     volumes:
       - "/srv/pterodactyl/var/:/app/var/"
