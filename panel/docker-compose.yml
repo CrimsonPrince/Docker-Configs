@@ -35,7 +35,7 @@ services:
     environment:
       ## These are defaults and should be left alone
       - "APP_ENV=production"
-      - "APP_DEBUG=false"
+      - "APP_DEBUG=true"
       - "APP_THEME=pterodactyl"
       - "APP_CLEAR_TASKLOG=720"
       - "APP_DELETE_MINUTES=10"
