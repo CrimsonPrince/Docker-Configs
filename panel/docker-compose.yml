@@ -72,21 +72,6 @@ services:
       - "MAIL_PASSWORD=''"
       - "MAIL_ENCRYPTION=true"
 
-  daemon:
-    image: quay.io/pterodactyl/wing:latest
-    restart: always
-    tty: true
-    environment:
-        - "DEBUG=false"
-        - "TZ=UTC" # change to the three letter timezone of your choosing
-    volumes:
-        - "/var/run/docker.sock:/var/run/docker.sock"
-        - "/var/lib/docker/containers/:/var/lib/docker/containers/"
-        - "/etc/pterodactyl/:/etc/pterodactyl/"
-        - "/var/lib/pterodactyl/:/var/lib/pterodactyl/"
-        - "/var/log/pterodactyl/:/var/log/pterodactyl/"
-        - "/tmp/pterodactyl/:/tmp/pterodactyl/"
-
 networks:
     traefik-public:
         external: true
