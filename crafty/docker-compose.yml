@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  web:
+    build: .
+    container_name: crafty
+    ports:
+      - "25565-25570"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.crafty-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.crafty-http.entrypoints=web"
+      - "traefik.http.routers.crafty-http.rule=Host(`crafty.r4.ie`)"
+      - "traefik.http.routers.crafty-http.middlewares=crafty-https@docker"
+      - "traefik.http.routers.crafty.entrypoints=web-secure"
+      - "traefik.http.routers.crafty.rule=Host(`crafty.r4.ie`)"
+      - "traefik.http.routers.crafty.tls=true"
+      - "traefik.http.routers.crafty.tls.certresolver=default"
+      - "traefik.http.services.crafty.loadbalancer.server.port=8000"
+      - "traefik.http.routers.crafty.middlewares=myAuth"
+      - "traefik.http.middlewares.myAuth.basicauth.users=r4:$$2y$$10$$7kP272D0MI8MoLSVDnmbAuP3176jLUsZ6omEv2.nGtSbtvzuxBW0G"
+    volumes: 
+      - ./server:/minecraft_servers
+      - ./docker/storage/db:/crafty_db
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
