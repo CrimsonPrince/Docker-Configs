@@ -1,31 +1,35 @@
-version: '3.5'
-services:
-  database:
-    image: mariadb:10.4
-    restart: always
-    volumes:
-      - "/srv/pterodactyl/database:/var/lib/mysql"
-    environment:
-      - "MYSQL_ROOT_PASSWORD=${ROOTPASSWD}"
-      - "MYSQL_DATABASE=${DB}"
-      - "MYSQL_USER=${USER}"
-      - "MYSQL_PASSWORD=${PASSWD}"
-    networks:
-      - backend
+version: '3.7'
 
-  cache:
-    image: redis:alpine
+services:
+
+  mysql:
+    image: mariadb:10.5
+    container_name: paneldb
     restart: always
     networks:
-      - backend
+      - local
+    env_file:
+      - .env
+    volumes:
+      - ${DATA_DIR}/mariadb:/var/lib/mysql
 
   panel:
-    image: quay.io/parkervcp/pterodactyl:release_v1.0.3
+    image: ccarney16/pterodactyl-panel:v1.1.1
     restart: always
+    container_name: panel
+    networks:
+      - local
+      - traefik-public
+    env_file:
+      - .env
+    depends_on:
+      - cache
+    environment:
+      - DB_DATABASE=${MYSQL_DATABASE}
+      - DB_USERNAME=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - "/srv/pterodactyl/var/:/app/var/"
-      - "/srv/pterodactyl/nginx/:/etc/nginx/conf.d/"
-      - "/srv/pterodactyl/logs/:/var/log/"
+      - ${DATA_DIR}/panel:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.panel-https.redirectscheme.scheme=https"
@@ -36,51 +40,18 @@ services:
       - "traefik.http.routers.panel.rule=Host(`panel.r4.ie`)"
       - "traefik.http.routers.panel.tls=true"
       - "traefik.http.routers.panel.tls.certresolver=default"
-    environment:
-      ## These are defaults and should be left alone
-      - "APP_ENV=production"
-      - "APP_DEBUG=true"
-      - "APP_THEME=pterodactyl"
-      - "APP_CLEAR_TASKLOG=720"
-      - "APP_DELETE_MINUTES=10"
-      - "APP_ENVIRONMENT_ONLY=false"
-      - "QUEUE_HIGH=high"
-      - "QUEUE_STANDARD=standard"
-      - "QUEUE_LOW=low"
-      ## Cache settings
-      - "CACHE_DRIVER=redis"
-      - "SESSION_DRIVER=redis"
-      - "QUEUE_DRIVER=redis"
-      - "REDIS_HOST=cache"
-      - "REDIS_PASSWORD=null"
-      - "REDIS_PORT=6379"
-      ## Domain settings
-      - "APP_URL=https://panel.r4.ie" ## if you are running this behind a reverse proxy with ssl app_url needs to be https still. 
-      ## Timezone settings
-      - "APP_TIMEZONE=UTC" ## http://php.net/manual/en/timezones.php
-      ## Service egg settings
-      - "APP_SERVICE_AUTHOR=noreply@panel.r4.ie" ## this is the email that gets put on eggs you create
-      ## Database settings
-      ## These can be left alone. Only change if you know what you are doing.
-      - "DB_HOST=database" 
-      - "DB_PORT=3306"
-      - "DB_DATABASE=${DB}"
-      - "DB_USERNAME=${USER}"
-      - "DB_PASSWORD=${PASSWD}"
-      ## Email settings
-      - "MAIL_FROM=noreply@panel.r4.ie"
-      - "MAIL_DRIVER=smtp"
-      - "MAIL_HOST=mail"
-      - "MAIL_PORT=1025"
-      - "MAIL_USERNAME=''"
-      - "MAIL_PASSWORD=''"
-      - "MAIL_ENCRYPTION=true"
+
+  cache:
+    image: redis:alpine
+    container_name: panelcache
+    restart: always
     networks:
-      - backend
-      - traefik-public
+      - local
+
+
 
 networks:
   traefik-public:
     external: true
-  backend:
-    internal: true
+  local:
+    external: false
