@@ -15,11 +15,8 @@ services:
       - ./servers.toml:/servers.toml
     networks:
       - traefik-public
-      - traefik
 
 
 networks:
   traefik-public:
     external: true
-  traefik:
-    internal: true

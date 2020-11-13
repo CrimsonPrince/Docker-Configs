@@ -16,7 +16,7 @@ services:
       - "traefik.http.routers.crafty.rule=Host(`crafty.r4.ie`)"
       - "traefik.http.routers.crafty.tls=true"
       - "traefik.http.routers.crafty.tls.certresolver=default"
-      - "traefik.http.services.crafty.loadbalancer.server.port=8000"
+      - traefik.http.services.crafty.loadbalancer.server.port=8000
       - "traefik.http.routers.crafty.middlewares=myAuth"
       - "traefik.http.middlewares.myAuth.basicauth.users=r4:$$2y$$10$$7kP272D0MI8MoLSVDnmbAuP3176jLUsZ6omEv2.nGtSbtvzuxBW0G"
     volumes: 
