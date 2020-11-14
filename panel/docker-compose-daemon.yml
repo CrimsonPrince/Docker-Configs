@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  daemon:
+    image: quay.io/parkervcp/pterodactyl:release_v1.1.1
+    restart: always
+    networks:
+      - daemon0
+    ports:
+      - "2022:2022"
+
+    environment:
+      - "DEBUG=false"
+      - "TZ=UTC" # change to the three letter timezone of your choosing
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker/containers/:/var/lib/docker/containers/"
+      - "/etc/pterodactyl/:/etc/pterodactyl/"
+      - "/var/lib/pterodactyl/:/var/lib/pterodactyl/"
+      - "/var/log/pterodactyl/:/var/log/pterodactyl/"
+      - "/tmp/pterodactyl/:/tmp/pterodactyl/"
+      ## you may need /srv/daemon-data if you are upgrading from an old daemon
+      ## - "/srv/daemon-data/:/srv/daemon-data/"
+      ## Required for ssl if you user let's encrypt. uncomment to use.
+      ## - "/etc/letsencrypt/:/etc/letsencrypt/"
+
+networks:
+  daemon0:
+    name: daemon0
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.21.0.0/16"
+    driver_opts:
+      com.docker.network.bridge.name: daemon0
