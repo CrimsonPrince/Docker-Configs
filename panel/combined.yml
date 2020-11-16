@@ -8,7 +8,7 @@ x-common:
     MYSQL_ROOT_PASSWORD: "CHANGE_ME_TOO"
   panel:
     &panel-environment
-    APP_URL: "https://example.com"
+    APP_URL: "https://panel1.r4.ie"
     # A list of valid timezones can be found here: http://php.net/manual/en/timezones.php
     APP_TIMEZONE: "UTC"
     APP_SERVICE_AUTHOR: "noreply@example.com"
@@ -43,15 +43,14 @@ services:
       <<: *db-environment
       MYSQL_DATABASE: "panel"
       MYSQL_USER: "pterodactyl"
+
   cache:
     image: redis:alpine
     restart: always
+
   panel:
     image: ghcr.io/pterodactyl/panel:latest
     restart: always
-    ports:
-      - "80:80"
-      - "443:443"
     links:
       - database
       - cache
@@ -71,6 +70,16 @@ services:
       QUEUE_DRIVER: "redis"
       REDIS_HOST: "cache"
       DB_HOST: "database"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.panel-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.panel-http.entrypoints=web"
+      - "traefik.http.routers.panel-http.rule=Host(`panel1.r4.ie`)"
+      - "traefik.http.routers.panel-http.middlewares=panel-https@docker"
+      - "traefik.http.routers.panel.entrypoints=web-secure"
+      - "traefik.http.routers.panel.rule=Host(`panel1.r4.ie`)"
+      - "traefik.http.routers.panel.tls=true"
+      - "traefik.http.routers.panel.tls.certresolver=default"
 
   wings:
     image: ghcr.io/pterodactyl/wings:latest
@@ -78,7 +87,6 @@ services:
     networks:
       - wings0
     ports:
-      - "8080:8080"
       - "2022:2022"
     tty: true
     environment:
@@ -95,6 +103,18 @@ services:
       #- "/srv/daemon-data/:/srv/daemon-data/"
       # Required for ssl if you user let's encrypt. uncomment to use.
       #- "/etc/letsencrypt/:/etc/letsencrypt/"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.node-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.node-http.entrypoints=web"
+      - "traefik.http.routers.node-http.rule=Host(`node1.r4.ie`)"
+      - "traefik.http.routers.node-http.middlewares=node-https@docker"
+      - "traefik.http.routers.node.entrypoints=web-secure"
+      - "traefik.http.routers.node.rule=Host(`node1.r4.ie`)"
+      - "traefik.http.routers.node.tls=true"
+      - "traefik.http.routers.node.tls.certresolver=default"
+      - traefik.http.services.crafty.loadbalancer.server.port=8080
+
 networks:
   default:
     ipam:
