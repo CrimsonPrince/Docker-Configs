@@ -5,9 +5,9 @@ services:
     restart: always
     networks:
       - daemon0
+      - local
     ports:
       - "2022:2022"
-
     environment:
       - "DEBUG=false"
       - "TZ=UTC" # change to the three letter timezone of your choosing
@@ -22,13 +22,25 @@ services:
       ## - "/srv/daemon-data/:/srv/daemon-data/"
       ## Required for ssl if you user let's encrypt. uncomment to use.
       ## - "/etc/letsencrypt/:/etc/letsencrypt/"
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.node-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.node-http.entrypoints=web"
+      - "traefik.http.routers.node-http.rule=Host(`node.r4.ie`)"
+      - "traefik.http.routers.node-http.middlewares=node-https@docker"
+      - "traefik.http.routers.node.entrypoints=web-secure"
+      - "traefik.http.routers.node.rule=Host(`node.r4.ie`)"
+      - "traefik.http.routers.node.tls=true"
+      - "traefik.http.routers.node.tls.certresolver=default"
+      - traefik.http.services.crafty.loadbalancer.server.port=8080
 networks:
   daemon0:
     name: daemon0
     driver: bridge
     ipam:
       config:
-        - subnet: "172.21.0.0/16"
+        - subnet: "172.30.0.0/16"
     driver_opts:
       com.docker.network.bridge.name: daemon0
+  local:
+    external: false
