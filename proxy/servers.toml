@@ -1,0 +1,15 @@
+   # Define a connection between requests and services	
+     [http.routers.dmap]	
+        rule = "Host(`crafty.r4.ie`)"	
+        entrypoints = ["web-secure"]	
+        service = "dmap"	
+     [http.routers.dmap.tls]	
+        certResolver = "default"	
+
+
+ [http.services]	
+        # Define how to reach an existing service on our infrastructure	
+        [http.services.dmap.loadBalancer]	
+           [[http.services.dmap.loadBalancer.servers]]	
+             url = "http://127.0.0.1:8000"	
+             passHostHeader = true 

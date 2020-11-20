@@ -10,6 +10,9 @@
   dashboard = true
   debug = true
 
+[providers.file]	
+  filename = "./servers.toml"
+
 [entryPoints]
   [entryPoints.web]
     address = ":80"

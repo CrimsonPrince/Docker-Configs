@@ -43,17 +43,21 @@ services:
       <<: *db-environment
       MYSQL_DATABASE: "panel"
       MYSQL_USER: "pterodactyl"
+    networks:
+      - local
 
   cache:
     image: redis:alpine
     restart: always
+    networks:
+      - local
 
   panel:
     image: ghcr.io/pterodactyl/panel:latest
     restart: always
-    links:
-      - database
-      - cache
+    networks:
+      - traefik-public
+      - local
     volumes:
       - "/srv/pterodactyl/var/:/app/var/"
       - "/srv/pterodactyl/nginx/:/etc/nginx/conf.d/"
@@ -86,6 +90,7 @@ services:
     restart: always
     networks:
       - wings0
+      - traefik-public
     ports:
       - "2022:2022"
     tty: true
@@ -113,7 +118,7 @@ services:
       - "traefik.http.routers.node.rule=Host(`node1.r4.ie`)"
       - "traefik.http.routers.node.tls=true"
       - "traefik.http.routers.node.tls.certresolver=default"
-      - traefik.http.services.crafty.loadbalancer.server.port=8080
+      - traefik.http.services.node.loadbalancer.server.port=8080
 
 networks:
   default:
@@ -128,3 +133,7 @@ networks:
         - subnet: "172.21.0.0/16"
     driver_opts:
       com.docker.network.bridge.name: wings0
+  traefik-public:
+    external: true
+  local:
+    internal: true
