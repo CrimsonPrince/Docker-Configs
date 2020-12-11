@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  rutorrent:
+    image: cm2network/tf2:sourcemod
+    container_name: tf2
+    restart: always
+    network_mode: "host"
+    environment:
+      SRCDS_TOKEN: ""
+    volumes:
+      - /docker/storage/tf2
