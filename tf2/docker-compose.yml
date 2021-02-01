@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  tf2:
+    image: cm2network/tf2:sourcemod
+    container_name: tf2
+    restart: always
+    network_mode: "host"
+    environment:
+      SRCDS_TOKEN: ""
+      SRCDS_STARTMAP: "pkmn_goldenrodcity_b3"
+      SRCDS_MAXPLAYERS: 32
+    volumes:
+      - /docker/storage/tf2:/home/steam/tf-dedicated/
