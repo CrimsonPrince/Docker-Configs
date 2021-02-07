@@ -6,7 +6,7 @@ services:
     container_name: fastdl
     restart: always
     volumes:
-      - /docker/storage/tf2/tf/download/maps:/usr/share/nginx/html
+      - /home/game/maintf/serverfiles/tf/download/maps:/var/lib/nginx/html/maps
     environment:
       NGINX_HOST: fastdl.r4.ie
     labels:
