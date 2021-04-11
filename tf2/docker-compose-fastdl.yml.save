@@ -3,10 +3,10 @@ version: '3.3'
 services:
   fastdl:
     image: dceoy/nginx-autoindex
-    container_name: fastdl
+                           container_name: fastdl
     restart: always
     volumes:
-      - /home/game/maintf/serverfiles/tf/download/maps:/var/lib/nginx/html/maps
+      - /docker/storage/map:/usr/share/nginx/html
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.fastdl-https.redirectscheme.scheme=https"
