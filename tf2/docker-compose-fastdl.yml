@@ -7,6 +7,8 @@ services:
     restart: always
     volumes:
       - /home/game/maintf/serverfiles/tf/download/maps:/var/lib/nginx/html/maps
+    environment:
+      NGINX_HOST: fastdl.r4.ie
     labels:
       - "traefik.enable=true"
       - "traefik.http.middlewares.fastdl-https.redirectscheme.scheme=https"

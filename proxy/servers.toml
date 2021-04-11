@@ -10,6 +10,12 @@
       service = "crafty"
    [http.routers.crafty.tls]
       certResolver = "default"
+ [http.routers.blue]
+      rule = "Host(`blue.r4.ie`)"
+      entrypoints = ["web-secure"]
+      service = "blue"
+   [http.routers.blue.tls]
+      certResolver = "default"
 
 [http.middlewares]
   [http.middlewares.dmap.redirectScheme]
@@ -18,7 +24,9 @@
   [http.middlewares.crafty.redirectScheme]
     scheme = "https"
     permanent = true
-
+  [http.middlewares.blue.redirectScheme]
+    scheme = "https"
+    permanent = true
 
  [http.services]
         [http.services.crafty.loadBalancer]
@@ -27,3 +35,6 @@
          [http.services.dmap.loadBalancer]
            [[http.services.dmap.loadBalancer.servers]]
              url = "http://192.168.10.1:8100"
+         [http.services.blue.loadBalancer]
+           [[http.services.blue.loadBalancer.servers]]
+             url = "http://192.168.10.1:8300"
