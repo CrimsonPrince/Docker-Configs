@@ -1,0 +1,30 @@
+services:
+  proxy:
+    extends:
+      file: ./proxy/docker-compose.yml
+      service: traefik
+
+  arthur_web:
+    extends:
+      file: ./arthurcoll.com/docker-compose.yml
+      service: arthur_web
+
+  jelly:
+    extends: ./jelly/docker-compose.yml
+    service: jellyfin
+
+  torrent:
+    extends: ./rutorrent/docker-compose.yml
+    service: rutorrent
+
+  tf2:
+    extends: ./tf2/docker-compose.yml
+    service: tf2
+  
+  fastdl:
+    extends: ./tf2/docker-compose-fastdl.yml
+    service: fastdl
+
+networks:
+  traefik-public:
+    external: true
