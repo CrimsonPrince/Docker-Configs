@@ -4,37 +4,25 @@
       service = "dmap"
    [http.routers.dmap.tls]
       certResolver = "default"
- [http.routers.crafty]
-      rule = "Host(`crafty.r4.ie`)"
+ [http.routers.lgbt]
+      rule = "Host(`web.r4.ie`)"
       entrypoints = ["web-secure"]
-      service = "crafty"
-   [http.routers.crafty.tls]
-      certResolver = "default"
- [http.routers.blue]
-      rule = "Host(`blue.r4.ie`)"
-      entrypoints = ["web-secure"]
-      service = "blue"
-   [http.routers.blue.tls]
+      service = "lgbt"
+   [http.routers.lgbt.tls]
       certResolver = "default"
 
 [http.middlewares]
   [http.middlewares.dmap.redirectScheme]
     scheme = "https"
     permanent = true
-  [http.middlewares.crafty.redirectScheme]
-    scheme = "https"
-    permanent = true
-  [http.middlewares.blue.redirectScheme]
+  [http.middlewares.lgbt.redirectScheme]
     scheme = "https"
     permanent = true
 
  [http.services]
-        [http.services.crafty.loadBalancer]
-           [[http.services.crafty.loadBalancer.servers]]
-             url = "http://192.168.10.1:8000"
          [http.services.dmap.loadBalancer]
            [[http.services.dmap.loadBalancer.servers]]
              url = "http://192.168.10.1:8100"
-         [http.services.blue.loadBalancer]
-           [[http.services.blue.loadBalancer.servers]]
+         [http.services.lgbt.loadBalancer]
+           [[http.services.lgbt.loadBalancer.servers]]
              url = "http://192.168.10.1:8300"
