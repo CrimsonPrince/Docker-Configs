@@ -10,20 +10,24 @@ services:
       service: arthur_web
 
   jelly:
-    extends: ./jelly/docker-compose.yml
-    service: jellyfin
+    extends:
+      file: ./jelly/docker-compose.yml
+      service: jellyfin
 
   torrent:
-    extends: ./rutorrent/docker-compose.yml
-    service: rutorrent
+    extends:
+      file: ./rutorrent/docker-compose.yml
+      service: rutorrent
 
   tf2:
-    extends: ./tf2/docker-compose.yml
-    service: tf2
+    extends:
+      file: ./tf2/docker-compose.yml
+      service: tf2
   
   fastdl:
-    extends: ./tf2/docker-compose-fastdl.yml
-    service: fastdl
+    extends:
+      file: ./tf2/docker-compose-fastdl.yml
+      service: fastdl
 
 networks:
   traefik-public:
