@@ -5,16 +5,13 @@ x-common:
     # Do not remove the "&db-password" from the end of the line below, it is important
     # for Panel functionality.
     MYSQL_PASSWORD: &db-password "CHANGE_ME"
-    MYSQL_ROOT_PASSWORD: "CHANGE_ME_TOO"
+    MYSQL_ROOT_PASSWORD: "CHANGE_ME"
   panel:
     &panel-environment
     APP_URL: "https://panel.r4.ie"
     # A list of valid timezones can be found here: http://php.net/manual/en/timezones.php
     APP_TIMEZONE: "UTC"
-    APP_SERVICE_AUTHOR: "arthur1coll@gmail.com"
-    # Uncomment the line below and set to a non-empty value if you want to use Let's Encrypt
-    # to generate an SSL certificate for the Panel.
-    # LE_EMAIL: ""
+    APP_SERVICE_AUTHOR: "admin@r4.ie"
   mail:
     &mail-environment
     MAIL_FROM: "noreply@r4.ie"
@@ -32,41 +29,41 @@ x-common:
 # The remainder of this file likely does not need to be changed. Please only make modifications
 # below if you understand what you are doing.
 #
+
 services:
+
   database:
     image: library/mysql:8.0
     restart: always
+    networks:
+      - local
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - "/srv/pterodactyl/database:/var/lib/mysql"
+      - "/docker/data/database:/var/lib/mysql"
     environment:
       <<: *db-environment
       MYSQL_DATABASE: "panel"
       MYSQL_USER: "pterodactyl"
+
   cache:
     image: redis:alpine
     restart: always
+    networks:
+      - local
+
   panel:
-    image: ghcr.io/pterodactyl/panel:latest
+    image: ghcr.io/pterodactyl/panel:v1.6.2
     restart: always
+    networks:
+      - traefik-public
+      - local
     links:
       - database
       - cache
     volumes:
-      - "/srv/pterodactyl/var/:/app/var/"
-      - "/srv/pterodactyl/nginx/:/etc/nginx/http.d/"
-      - "/srv/pterodactyl/certs/:/etc/letsencrypt/"
-      - "/srv/pterodactyl/logs/:/app/storage/logs"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.middlewares.panel-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.panel-http.entrypoints=web"
-      - "traefik.http.routers.panel-http.rule=Host(`panel.r4.ie`)"
-      - "traefik.http.routers.panel-http.middlewares=panel-https@docker"
-      - "traefik.http.routers.panel.entrypoints=web-secure"
-      - "traefik.http.routers.panel.rule=Host(`panel.r4.ie`)"
-      - "traefik.http.routers.panel.tls=true"
-      - "traefik.http.routers.panel.tls.certresolver=default"
+      - "/docker/data/panel/var/:/app/var/"
+      - "/docker/data/panel/logs/:/app/storage/logs"
+      - "/docker/data/panel/nginx/:/etc/nginx/conf.d/"
     environment:
       <<: [*panel-environment, *mail-environment]
       DB_PASSWORD: *db-password
@@ -77,11 +74,21 @@ services:
       QUEUE_DRIVER: "redis"
       REDIS_HOST: "cache"
       DB_HOST: "database"
-
-    networks:
-    - traefik-public
+      TRUSTED_PROXIES: "*"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.panel-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.panel-http.entrypoints=web"
+      - "traefik.http.routers.panel-http.rule=Host(`panel.r4.ie`)"
+      - "traefik.http.routers.panel-http.middlewares=panel-https@docker"
+      - "traefik.http.routers.panel.entrypoints=web-secure"
+      - "traefik.http.routers.panel.rule=Host(`panel.r4.ie`)"
+      - "traefik.http.routers.panel.tls=true"
+      - "traefik.http.routers.panel.tls.certresolver=default"
 
 networks:
+  local:
+    external: false
   traefik-public:
     external: true
   default:
