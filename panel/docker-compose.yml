@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.7'
 x-common:
   database:
     &db-environment
@@ -49,9 +49,6 @@ services:
   panel:
     image: ghcr.io/pterodactyl/panel:latest
     restart: always
-    ports:
-      - "80:80"
-      - "443:443"
     links:
       - database
       - cache
@@ -60,6 +57,16 @@ services:
       - "/srv/pterodactyl/nginx/:/etc/nginx/http.d/"
       - "/srv/pterodactyl/certs/:/etc/letsencrypt/"
       - "/srv/pterodactyl/logs/:/app/storage/logs"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.panel-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.panel-http.entrypoints=web"
+      - "traefik.http.routers.panel-http.rule=Host(`panel.r4.ie`)"
+      - "traefik.http.routers.panel-http.middlewares=panel-https@docker"
+      - "traefik.http.routers.panel.entrypoints=web-secure"
+      - "traefik.http.routers.panel.rule=Host(`panel.r4.ie`)"
+      - "traefik.http.routers.panel.tls=true"
+      - "traefik.http.routers.panel.tls.certresolver=default"
     environment:
       <<: [*panel-environment, *mail-environment]
       DB_PASSWORD: *db-password
@@ -70,13 +77,14 @@ services:
       QUEUE_DRIVER: "redis"
       REDIS_HOST: "cache"
       DB_HOST: "database"
+
     networks:
     - traefik-public
 
 networks:
+  traefik-public:
+    external: true
   default:
     ipam:
       config:
         - subnet: 172.20.0.0/16
-  traefik-public:
-    external: true
