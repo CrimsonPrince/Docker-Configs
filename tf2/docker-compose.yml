@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  tf2:
+    image: melkortf/tf2-base
+    container_name: tf2
+    restart: always
+    ports:
+      - 27015:27015
+    volumes:
+      - /docker/tf2/:/home/tf2/server/tf/
+    environment:
+      NGINX_HOST: fastdl.r4.ie
+      SERVER_HOSTNAME: GameSociety TF2
+      RCON_PASSWORD: ""
+      DOWNLOAD_URL: "fastdl.r4.ie"
