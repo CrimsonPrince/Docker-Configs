@@ -8,7 +8,7 @@ services:
     ports:
       - 27015:27015
     volumes:
-      - /docker/tf2/:/home/tf2/server/tf/
+      - /docker/tf2:/home/tf2/server/tf
     environment:
       NGINX_HOST: fastdl.r4.ie
       SERVER_HOSTNAME: GameSociety TF2
