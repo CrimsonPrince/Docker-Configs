@@ -15,7 +15,7 @@ services:
       - "traefik.http.routers.personal.tls=true"
       - "traefik.http.routers.personal.tls.certresolver=default"
     volumes:
-     - /docker/storage/arthurcoll.com:/usr/local/apache2/htdocs/
+     - /docker/arthurcoll.com:/usr/local/apache2/htdocs/
     networks:
       - traefik-public
 

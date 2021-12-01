@@ -16,9 +16,9 @@ services:
       - "traefik.http.routers.jelly.tls=true"
       - "traefik.http.routers.jelly.tls.certresolver=default"
     volumes:
-      - /docker/storage/jelly/config:/config
-      - /docker/storage/jelly/cache:/cache
-      - /home/r4/docker:/media
+      - /docker/jelly/config:/config
+      - /docker/jelly/cache:/cache
+      - /docker:/media
     networks:
       - traefik-public
 
