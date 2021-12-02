@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   rutorrent:
-    image: linuxserver/rutorrent
+    image: crazymax/rtorrent-rutorrent:latest
     container_name: rutorrent
     restart: always
     labels:
@@ -20,10 +20,19 @@ services:
       PUID: 1000
       PGID: 1000
       VERSION: docker
+    ports:
+      - 5000:50000
+    env_file:
+      - "rtorrent.env"
     volumes:
-      - /docker/torrent/config:/config
-      - /docker/downloads:/downloads
-      - /docker:/docker
+      - /storage/torrent/config:/config
+      - /storage/downloads:/downloads
+      - /storage:/docker
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 32000
+        hard: 40000
     networks:
       - traefik-public
 
