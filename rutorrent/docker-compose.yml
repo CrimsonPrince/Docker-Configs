@@ -16,6 +16,7 @@ services:
       - "traefik.http.routers.torrent.tls.certresolver=default"
       - "traefik.http.routers.torrent.middlewares=myAuth"
       - "traefik.http.middlewares.myAuth.basicauth.users=r4:$$2y$$10$$7kP272D0MI8MoLSVDnmbAuP3176jLUsZ6omEv2.nGtSbtvzuxBW0G"
+      - traefik.http.services.node.loadbalancer.server.port=8080
     environment:
       PUID: 1000
       PGID: 1000

@@ -8,9 +8,12 @@ services:
     ports:
       - 27015:27015
     volumes:
-      - /docker/tf2:/home/tf2/server/tf
+      - /docker/tf2/maps:/home/tf2/server/tf/download/maps
+      - /docker/tf2/cfg:/home/tf2/server/tf/cfg
+      - /docker/tf2/addons/sourcemod/configs:/home/tf2/server/tf/addons/sourcemod/configs
     environment:
       NGINX_HOST: fastdl.r4.ie
       SERVER_HOSTNAME: GameSociety TF2
       RCON_PASSWORD: ""
       DOWNLOAD_URL: "fastdl.r4.ie"
+      SERVER_PASSWORD: "tudublin"
