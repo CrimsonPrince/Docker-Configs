@@ -2,11 +2,13 @@ version: '3.3'
 
 services:
   tf2:
-    image: melkortf/tf2-base
+    image: melkortf/tf2-sourcemod
     container_name: tf2
     restart: always
     ports:
       - 27015:27015
+      - 27016:27016
+      - 27018:27018
     volumes:
       - /docker/tf2/maps:/home/tf2/server/tf/download/maps
       - /docker/tf2/cfg:/home/tf2/server/tf/cfg
