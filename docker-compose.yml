@@ -1,3 +1,4 @@
+version: '3.9'
 services:
   proxy:
     extends:
@@ -21,7 +22,7 @@ services:
   
   fastdl:
     extends:
-      file: ./fastdl/docker-compose-fastdl.yml
+      file: ./fastdl/docker-compose.yml
       service: fastdl
 
 networks:
