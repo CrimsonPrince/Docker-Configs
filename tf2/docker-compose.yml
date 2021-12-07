@@ -11,8 +11,9 @@ services:
       - 27018:27018
     volumes:
       - /docker/tf2/maps:/home/tf2/server/tf/download/maps
-      - /docker/tf2/cfg:/home/tf2/server/tf/cfg
-      - /docker/tf2/addons/sourcemod/configs:/home/tf2/server/tf/addons/sourcemod/configs
+      - /docker/tf2/cfg/mapcycle.txt:/home/tf2/server/tf/cfg/mapcycle.txt
+      - /docker/tf2/addons/sourcemod/configs/admins.cfg:/home/tf2/server/tf/addons/sourcemod/configs/admins.cfg
+      - /docker/tf2/cfg/server.cfg:/docker/tf2/tf/cfg/server.cfg
     environment:
       NGINX_HOST: fastdl.r4.ie
       SERVER_HOSTNAME: GameSociety TF2

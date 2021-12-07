@@ -18,7 +18,7 @@ services:
     volumes:
       - /docker/jelly/config:/config
       - /docker/jelly/cache:/cache
-      - /docker:/media
+      - /storage:/media
     networks:
       - traefik-public
 
