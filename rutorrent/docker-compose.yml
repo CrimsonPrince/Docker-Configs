@@ -26,9 +26,8 @@ services:
     env_file:
       - "rtorrent.env"
     volumes:
-      - /storage/torrent/config:/config
+      - /docker/torrent/config:/config
       - /storage/downloads:/downloads
-      - /storage:/docker
     ulimits:
       nproc: 65535
       nofile:

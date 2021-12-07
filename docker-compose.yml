@@ -21,7 +21,7 @@ services:
   
   fastdl:
     extends:
-      file: ./tf2/docker-compose-fastdl.yml
+      file: ./fastdl/docker-compose-fastdl.yml
       service: fastdl
 
 networks:
