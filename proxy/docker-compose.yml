@@ -14,7 +14,8 @@ services:
       - ./traefik.toml:/traefik.toml
       - ./servers.toml:/servers.toml
     networks:
-      - traefik-public
+      traefik-public:
+        ipv4_address: 172.18.0.2
 
 
 networks:
