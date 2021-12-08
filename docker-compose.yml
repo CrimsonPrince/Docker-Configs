@@ -9,30 +9,22 @@ services:
     extends:
       file: ./arthurcoll.com/docker-compose.yml
       service: arthur_web
-      depends_on:
-      - proxy
 
   jelly:
     extends:
       file: ./jelly/docker-compose.yml
       service: jellyfin
-      depends_on:
-      - proxy
 
   torrent:
     extends:
       file: ./rutorrent/docker-compose.yml
       service: rutorrent
-      depends_on:
-      - proxy
-
+  
   fastdl:
     extends:
       file: ./fastdl/docker-compose.yml
       service: fastdl
-      depends_on:
-      - proxy
-      
+
 networks:
   traefik-public:
     external: true
