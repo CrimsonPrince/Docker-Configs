@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  traefik:
+    image: ubuntu/squid
+    container_name: squid
+    restart: always
+    volumes:
+      - ./squid.conf:/etc/squid/squid.conf
+      - /docker/squid/passwords:/etc/squid/passwords
+    ports:
+      - 3128:3128
