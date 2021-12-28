@@ -25,6 +25,11 @@ services:
       file: ./fastdl/docker-compose.yml
       service: fastdl
 
+  squid:
+    extends:
+      file: ./squid/docker-compose.yml
+      service: squid
+
 networks:
   traefik-public:
     external: true
