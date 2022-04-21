@@ -5,11 +5,6 @@ services:
       file: ./proxy/docker-compose.yml
       service: traefik
 
-  arthur_web:
-    extends:
-      file: ./arthurcoll.com/docker-compose.yml
-      service: arthur_web
-
   jelly:
     extends:
       file: ./jelly/docker-compose.yml
