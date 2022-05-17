@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  traefik:
+  squid:
     image: ubuntu/squid
     container_name: squid
     restart: always
