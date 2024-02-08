@@ -1,14 +1,20 @@
-version: '3.1'
+version: '3.9'
 
 services:
   wordpress:
     image: wordpress
     restart: always
     env_file: .env
-    depends_on:
-      - db
-    ports:
-      - 8080:80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.scouts-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.scouts-http.entrypoints=web"
+      - "traefik.http.routers.scouts-http.rule=Host(`3rdscouts.ie`)"
+      - "traefik.http.routers.scouts-http.middlewares=scouts-https@docker"
+      - "traefik.http.routers.scouts.entrypoints=web-secure"
+      - "traefik.http.routers.scouts.rule=Host(`3rdscouts.ie`)"
+      - "traefik.http.routers.scouts.tls=true"
+      - "traefik.http.routers.scouts.tls.certresolver=default"
     environment:
       - WORDPRESS_DB_HOST=db:3306
       - WORDPRESS_DB_USER=$MYSQL_USER

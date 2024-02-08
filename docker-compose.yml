@@ -26,8 +26,9 @@ services:
       service: squid
 
   wordpress:
-    file: ./wordpress/docker-compose.yml
-    service: wordpress
+    extends:
+      file: ./wordpress/docker-compose.yml
+      service: wordpress
 
 networks:
   traefik-public:
