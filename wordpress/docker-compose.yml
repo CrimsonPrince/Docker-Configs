@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8080:80
+    environment:
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=scouts
+    volumes:
+      - /docker/scouts/web:/var/www/html
+      - ./php.conf.ini:/usr/local/etc/php/conf.d/conf.ini:z
+    networks:
+      - traefik-public
+      - scout
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: scouts
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - /docker/scouts/db:/var/lib/mysql
+    networks:
+      - scout
+
+networks:
+  traefik-public:
+    external: true
