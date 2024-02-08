@@ -44,3 +44,5 @@ services:
 networks:
   traefik-public:
     external: true
+  scout:
+    driver: bridge
