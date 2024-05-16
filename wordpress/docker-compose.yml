@@ -9,10 +9,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.scouts-https.redirectscheme.scheme=https"
       - "traefik.http.routers.scouts-http.entrypoints=web"
-      - "traefik.http.routers.scouts-http.rule=Host(`3rdscouts.ie`) || Host(`donnybrookscouts.org`)"
+      - "traefik.http.routers.scouts-http.rule=Host(`3rdscouts.ie`)"
       - "traefik.http.routers.scouts-http.middlewares=scouts-https@docker"
       - "traefik.http.routers.scouts.entrypoints=web-secure"
-      - "traefik.http.routers.scouts.rule=Host(`3rdscouts.ie`) || Host(`donnybrookscouts.org`)"
+      - "traefik.http.routers.scouts.rule=Host(`3rdscouts.ie`)"
       - "traefik.http.routers.scouts.tls=true"
       - "traefik.http.routers.scouts.tls.certresolver=default"
     environment:
@@ -20,12 +20,14 @@ services:
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=scouts
+      - WPSITEURL=http://172.18.0.30:8080/
+      - WPHOME=http://172.18.0.30:8080/
     volumes:
       - /docker/scouts/web:/var/www/html
       - ./php.conf.ini:/usr/local/etc/php/conf.d/conf.ini:z
     networks:
       - traefik-public
-      - scout
+      - scouts
 
   db:
     image: mysql:5.7
@@ -39,10 +41,11 @@ services:
     volumes:
       - /docker/scouts/db:/var/lib/mysql
     networks:
-      - scout
+     - traefik-public
+     - scouts
 
 networks:
   traefik-public:
     external: true
-  scout:
+  scouts:
     driver: bridge
