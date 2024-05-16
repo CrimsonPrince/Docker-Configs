@@ -9,10 +9,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.scouts-https.redirectscheme.scheme=https"
       - "traefik.http.routers.scouts-http.entrypoints=web"
-      - "traefik.http.routers.scouts-http.rule=Host(`3rdscouts.ie`)"
+      - "traefik.http.routers.scouts-http.rule=Host(`3rdscouts.ie`) || Host(`donnybrookscouts.org`)"
       - "traefik.http.routers.scouts-http.middlewares=scouts-https@docker"
       - "traefik.http.routers.scouts.entrypoints=web-secure"
-      - "traefik.http.routers.scouts.rule=Host(`3rdscouts.ie`)"
+      - "traefik.http.routers.scouts.rule=Host(`3rdscouts.ie`) || Host(`donnybrookscouts.org`)"
       - "traefik.http.routers.scouts.tls=true"
       - "traefik.http.routers.scouts.tls.certresolver=default"
     environment:
