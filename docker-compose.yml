@@ -14,7 +14,7 @@ services:
     extends:
       file: ./rutorrent/docker-compose.yml
       service: rutorrent
-  
+
   fastdl:
     extends:
       file: ./fastdl/docker-compose.yml
