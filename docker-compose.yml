@@ -25,11 +25,6 @@ services:
       file: ./squid/docker-compose.yml
       service: squid
 
-  wordpress:
-    extends:
-      file: ./wordpress/docker-compose.yml
-      service: wordpress
-
 networks:
   traefik-public:
     external: true
