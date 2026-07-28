@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   rutorrent:
-    image: crazymax/rtorrent-rutorrent:latest
+    image: crazymax/rtorrent-rutorrent:5.2.10-0.15.5
     container_name: rutorrent
     restart: always
     labels:
