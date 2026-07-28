@@ -22,7 +22,7 @@ services:
       PGID: 1000
       VERSION: docker
     ports:
-      - 5000:50000
+      - 50000:50000
     env_file:
       - "rtorrent.env"
     volumes:
